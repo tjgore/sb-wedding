@@ -77,3 +77,12 @@ $('#submit-form').on('click', function(e) {
     }
   })
 })
+
+const currentDate = new Date().toISOString().slice(0,10)
+const expiresAt = new Date('2021-03-30').toISOString().slice(0,10)
+
+if (currentDate === expiresAt) {
+  $('#rsvpForm').hide();
+  $('#pleaseRsvp').text("RSVP has ended!");
+  $('#pleaseRsvp2').show();
+}
