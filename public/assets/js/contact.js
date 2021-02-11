@@ -1,16 +1,19 @@
 var $form = $('form#rsvpForm'),
-url = 'https://script.google.com/macros/s/AKfycbyAuT2w7wzxp5lcQFsOYTavN45pvI1PshyEbjXBZbmyIela0r0/exec'
+url = 'https://api.apispreadsheets.com/data/8036/'
 
 
 $('#submit-form').on('click', function(e) {
   e.preventDefault();
 
+  $('#submit-form').text('...Sending');
+  $('#submit-form').attr("disabled", true);
+  
   var errors = [];
-$("#msg").html('')
+  $("#msg").html('')
 
   var name = $('#guestName').val();
-  var email = $('#guestEmail').val();
-  var message = $('#guestMessage').val();
+  var phone = $('#guestPhone').val();
+  var rsvp = parseInt($('#guestRsvp').val());
 
   if(name.trim() == ''){
     errors.push("Please enter your name")
@@ -18,42 +21,59 @@ $("#msg").html('')
   if(name.length > 50){
     errors.push("Your name must be under 50 characters")
   }
-  if(email.trim() == ''){
-    errors.push("Please enter your email")
+  if(phone.trim() == ''){
+    errors.push("Please enter your phone number")
   }
-  if(email.length > 50){
-    errors.push("Your email is too long")
+  if(phone.length > 15){
+    errors.push("Your phone number is too long")
   }
-  if(email.indexOf('@') == -1){
-    errors.push("Your email is not valid ")
+  console.log('rsp',rsvp)
+  if (typeof(rsvp) !== 'number' || !rsvp) {
+    rsvp = 0
   }
-  if(message.length > 150){
-    errors.push("Your message is too long")
+  if(rsvp > 10){
+    errors.push("Your rsvp amount is too high")
   }
 
   if(errors.length) {
     for(var i=0; i<errors.length; i++) {
       $("#msg").append('<p>' + errors[i] + '</p>')
     }
+
+    $('#submit-form').text('I am attending');
+    $('#submit-form').attr("disabled", false);
     return;
   }
 
-  var jqxhr = $.ajax({
-    url: url,
-    method: "GET",
-    dataType: "json",
-    data: $form.serialize()
-  }).done( 
-  function(response) {
-    if(response.result == 'success'){
-      console.log('Success')
-      $('#guestName').val('');
-      $('#guestEmail').val('');
-      $('#guestMessage').val('');
+  const data = JSON.stringify({
+    data: {
+      Name: name,
+      Phone: phone,
+      'Rsvp Amount': rsvp 
+    }
+  })
 
-      $("#msg").html('<p> Thank you! Your message was sent!</p>')
-      }
+  var handleSuccess = function(response){
+    console.log('Success')
+    $('#guestName').val('');
+    $('#guestPhone').val('');
+    $('#guestRsvp').val('');
+
+    $("#msg").html('<p> Thank you! Your RSVP was sent!</p>')
+    $('#submit-form').text('I am attending');
+    $('#submit-form').attr("disabled", false);
   }
-  
-  );
+
+    var jqxhr = $.ajax({
+    url: url,
+    type: "post",
+    data: data,
+    success: handleSuccess,
+    error: function(response){
+      console.log('Response', response);
+      $("#msg").html('<p>There was an error! Refresh the page and please Try again.</p>')
+      $('#submit-form').text('I am attending');
+      $('#submit-form').attr("disabled", false);
+    }
+  })
 })

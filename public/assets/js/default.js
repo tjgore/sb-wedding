@@ -13,6 +13,7 @@ $(document).ready(function(){
           scrollTop: ($($anchor.attr('href')).offset().top - 40)
       }, 1250, 'easeInOutExpo');
       event.preventDefault();
+      $(".navbar-toggle").click(); 
   });
 
   //parallax
@@ -25,11 +26,11 @@ $("#rsvpForm").validate({
     guestName: {
       required: true
     },
-    guestEmail: {
+    guestPhone: {
       required: true
     },
-    guestMessage: {
-      required: true
+    guestRsvp: {
+      required: false
     }
   }
 });
