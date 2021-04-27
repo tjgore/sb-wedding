@@ -14,6 +14,7 @@ $('#submit-form').on('click', function(e) {
   var name = $('#guestName').val();
   var phone = $('#guestPhone').val();
   var rsvp = parseInt($('#guestRsvp').val());
+  var entree = $('#guestEntree').val();
 
   if(name.trim() == ''){
     errors.push("Please enter your name")
@@ -34,6 +35,9 @@ $('#submit-form').on('click', function(e) {
   if(rsvp > 10){
     errors.push("Your rsvp amount is too high")
   }
+  if(entree === ''){
+    errors.push("Please select an entree")
+  }
 
   if(errors.length) {
     for(var i=0; i<errors.length; i++) {
@@ -49,22 +53,26 @@ $('#submit-form').on('click', function(e) {
     data: {
       Name: name,
       Phone: phone,
-      'Rsvp Amount': rsvp 
+      'Rsvp Amount': rsvp,
+       Entree: entree,
     }
   })
+
+  // console.log(data);
 
   var handleSuccess = function(response){
     console.log('Success')
     $('#guestName').val('');
     $('#guestPhone').val('');
     $('#guestRsvp').val('');
+    $('#guestEntree').val('');
 
     $("#msg").html('<p> Thank you! Your RSVP was sent!</p>')
     $('#submit-form').text('I am attending');
     $('#submit-form').attr("disabled", false);
   }
 
-    var jqxhr = $.ajax({
+  var jqxhr = $.ajax({
     url: url,
     type: "post",
     data: data,
@@ -79,7 +87,7 @@ $('#submit-form').on('click', function(e) {
 })
 
 const currentDate = new Date().toISOString().slice(0,10)
-const expiresAt = new Date('2021-03-30').toISOString().slice(0,10)
+const expiresAt = new Date('2021-06-30').toISOString().slice(0,10)
 
 if (currentDate === expiresAt) {
   $('#rsvpForm').hide();
