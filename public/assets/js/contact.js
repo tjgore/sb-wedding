@@ -28,12 +28,8 @@ $('#submit-form').on('click', function(e) {
   if(phone.length > 15){
     errors.push("Your phone number is too long")
   }
-  console.log('rsp',rsvp)
-  if (typeof(rsvp) !== 'number' || !rsvp) {
+  if (!rsvp) {
     rsvp = 0
-  }
-  if(rsvp > 10){
-    errors.push("Your rsvp amount is too high")
   }
   if(entree === ''){
     errors.push("Please select an entree")
@@ -87,9 +83,9 @@ $('#submit-form').on('click', function(e) {
 })
 
 const currentDate = new Date().toISOString().slice(0,10)
-const expiresAt = new Date('2021-06-30').toISOString().slice(0,10)
-
-if (currentDate === expiresAt) {
+const expiresAt = new Date('2021-05-16').toISOString().slice(0,10)
+console.log(currentDate, expiresAt);
+if (currentDate >= expiresAt) {
   $('#rsvpForm').hide();
   $('#pleaseRsvp').text("RSVP has ended!");
   $('#pleaseRsvp2').show();

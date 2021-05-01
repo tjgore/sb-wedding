@@ -3,6 +3,9 @@ $(window).load(function() {
   $(".se-pre-con").fadeOut("slow");;
 });
 $(document).ready(function(){
+  if (window.location.search.indexOf('plus') !== -1) {
+    $('#plus-2').hide();
+  }
   $('body').scrollspy({
     target: '.navbar-fixed-top',
     offset: 40
