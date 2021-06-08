@@ -83,7 +83,7 @@ $('#submit-form').on('click', function(e) {
 })
 
 const currentDate = new Date().toISOString().slice(0,10)
-const expiresAt = new Date('2021-05-16').toISOString().slice(0,10)
+const expiresAt = new Date('2021-06-31').toISOString().slice(0,10)
 console.log(currentDate, expiresAt);
 if (currentDate >= expiresAt) {
   $('#rsvpForm').hide();
